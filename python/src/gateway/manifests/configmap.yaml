@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+  # service name will resolve to the service's host ip address (for our auth service object)
+  AUTH_SVC_ADDRESS: "auth:5000"

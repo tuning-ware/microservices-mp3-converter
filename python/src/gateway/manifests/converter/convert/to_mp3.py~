@@ -1,0 +1,22 @@
+import pika, json, tempfile, os
+from bson.objectid import ObjectId
+import moviepy.editor
+
+
+def start(message, fs_videos, fs_mp3s, channel):
+    message = json.loads(message)
+
+    # create a named empty temp file
+    tf = tempfile.NamedTemporaryFile
+    # get our video file from gridfs
+    # convert the fid back into an ID object to get file from mongodb
+    out = fs_videos.get(ObjectId(message["video_fid"]))
+    # add video contents to empty file
+    tf.write(out.read())
+    # create audio from temp video file
+    audio = moviepy.editor.VideoFileClip(tf.name).audio
+    tf.close()
+
+    # write audio to file
+    tf_path = tempfile.gettempdir() + f"/{message['video_fid']}.mp3"
+    audio.write_audiofile(tf_path)

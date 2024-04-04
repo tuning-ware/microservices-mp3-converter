@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    # service will target Pods with the label app: gateway.
+    app: gateway
+  # service is assigned a virtual IP address (ClusterIP) within the Kubernetes cluster
+  type: ClusterIP
+  ports:
+      # port number which service listens for incoming traffic
+    - port: 8080
+      # port number on which the Pods are listening for incoming traffic
+      targetPort: 8080
+      protocol: TCP
